@@ -4,9 +4,15 @@
 package com.dumitru;
 
 import com.dumitru.taskmanager.BaseTaskManager;
+import com.dumitru.taskmanager.FifoTaskManager;
+import com.dumitru.taskmanager.PriorityTaskManager;
 import com.dumitru.taskmanager.TaskManager;
 import com.dumitru.taskmanager.exception.ProcessLimitExceededException;
 import com.dumitru.taskmanager.process.Process;
+import com.dumitru.taskmanager.process.comparator.PidProcessComparator;
+import com.dumitru.taskmanager.process.comparator.PriorityProcessComparator;
+
+import java.util.Comparator;
 
 import static com.dumitru.taskmanager.process.Priority.*;
 
@@ -23,7 +29,9 @@ public class App {
         Process p4 = new Process(LOW);
         Process p5 = new Process(HIGH);
         Process p6 = new Process(MEDIUM);
-        TaskManager taskManager = new BaseTaskManager();
+//        TaskManager taskManager = new BaseTaskManager();
+//        TaskManager taskManager = new FifoTaskManager();
+        TaskManager taskManager = new PriorityTaskManager();
         try {
             taskManager.add(p1);
             taskManager.add(p2);
@@ -36,6 +44,8 @@ public class App {
         }
 
         printProcessesDetailsSortedByCreationTime(taskManager);
+        printSortedProcessesDetails(taskManager, new PidProcessComparator());
+        printSortedProcessesDetails(taskManager, new PriorityProcessComparator());
 
         taskManager.kill(new Process(HIGH));
         taskManager.kill(p3);
@@ -46,6 +56,13 @@ public class App {
 
         taskManager.killAll();
         printProcessesDetailsSortedByCreationTime(taskManager);
+    }
+
+    private static void printSortedProcessesDetails(TaskManager taskManager, Comparator<Process> comparator) {
+        for (Process p : taskManager.list(comparator)) {
+            System.out.println(p.toString());
+        }
+        System.out.println();
     }
 
     private static void printProcessesDetailsSortedByCreationTime(TaskManager taskManager) {
