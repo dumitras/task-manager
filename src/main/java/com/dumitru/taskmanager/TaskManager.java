@@ -4,6 +4,7 @@ import com.dumitru.taskmanager.exception.ProcessLimitExceededException;
 import com.dumitru.taskmanager.process.Priority;
 import com.dumitru.taskmanager.process.Process;
 
+import java.util.Comparator;
 import java.util.List;
 
 public interface TaskManager {
@@ -16,6 +17,8 @@ public interface TaskManager {
     void killGroup(Priority priority);
 
     void killAll();
+
+    List<Process> list(Comparator<Process> processComparator);
 
     List<Process> list();
 
