@@ -46,8 +46,7 @@ public class App {
         printProcessesDetailsSortedByCreationTime(taskManager);
         printSortedProcessesDetails(taskManager, new PidProcessComparator());
         printSortedProcessesDetails(taskManager, new PriorityProcessComparator());
-
-        taskManager.kill(new Process(HIGH));
+        
         taskManager.kill(p3);
         printProcessesDetailsSortedByCreationTime(taskManager);
 
