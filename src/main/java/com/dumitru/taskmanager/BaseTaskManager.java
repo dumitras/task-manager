@@ -5,6 +5,7 @@ import com.dumitru.taskmanager.process.Priority;
 import com.dumitru.taskmanager.process.Process;
 import com.dumitru.taskmanager.process.comparator.TimestampProcessComparator;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,6 +46,13 @@ public class BaseTaskManager implements TaskManager {
     public List<Process> list() {
         List<Process> orderedProcesses = new LinkedList<>(processes);
         orderedProcesses.sort(new TimestampProcessComparator());
+        return orderedProcesses;
+    }
+
+    @Override
+    public List<Process> list(Comparator<Process> comparator) {
+        List<Process> orderedProcesses = new LinkedList<>(processes);
+        orderedProcesses.sort(comparator);
         return orderedProcesses;
     }
 
